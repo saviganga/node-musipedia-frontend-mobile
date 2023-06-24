@@ -25,14 +25,18 @@ const LoginSignupPage = ({onLogin}) => {
 
       // Perform login logic
       try {
-        const response = await axios.post('https://5b1f-102-216-201-33.ngrok-free.app/xauth/login/', { user_name: username, password: password });
+        const response = await axios.post(`https://ae7e-197-211-58-40.ngrok-free.app/xauth/login`, { email: email, password: password });
+
+        console.log(email)
     
         // Handle response
         if (response.status === 200) {
 
+            console.log(response.data)
+
           // Successful login
         //   alert(` User successfully logged in `);
-        const token = response.data.data;
+        const token = response.data.token;
         await AsyncStorage.setItem('userToken', token);
           onLogin();
         } else {
@@ -47,14 +51,26 @@ const LoginSignupPage = ({onLogin}) => {
     } else {
         // Signup logic
         try {
-          const response = await axios.post('https://5b1f-102-216-201-33.ngrok-free.app/user/account/signup/', { user_name: username, password: password, email: email, first_name: firstname, last_name: lastname, re_password: repassword});
+          const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/users', { password: password, email: email, firstName: firstname, lastName: lastname});
           
           // Handle response
           if (response.status === 201) {
             // Successful signup
             // alert(` User successfully signed up `);
-            const token = await response.data.access;
-            onLogin();
+            const login_resp = await axios.post(`https://ae7e-197-211-58-40.ngrok-free.app/xauth/login`, { email: email, password: password });
+            if (login_resp.status === 200) {
+
+                console.log(login_resp.data)
+    
+                // Successful login
+                //   alert(` User successfully logged in `);
+                const token = login_resp.data.token;
+                await AsyncStorage.setItem('userToken', token);
+                onLogin();
+                } else {
+                // Failed login
+                alert(response.message);
+                }
           } else {
             // Failed signup
             alert(response.message);
@@ -76,12 +92,12 @@ const LoginSignupPage = ({onLogin}) => {
       {isLogin ? (
         <>
           <View style={styles.vcontainer}>
-          <Text style={styles.sinputLabel}>username</Text>
+          <Text style={styles.sinputLabel}>email</Text>
           <TextInput
             style={styles.scontainer}
-            value={username}
-            onChangeText={text => setUsername(text)}
-            placeholder="Username"
+            value={email}
+            onChangeText={text => setEmail(text)}
+            placeholder="email"
           />
           <Text style={styles.sinputLabel}>password</Text>
           <TextInput
@@ -95,13 +111,13 @@ const LoginSignupPage = ({onLogin}) => {
         </>
       ) : (
         <>
-          <Text style={styles.inputLabel}>username</Text>
+          {/* <Text style={styles.inputLabel}>username</Text>
           <TextInput
             style={styles.input}
             value={username}
             onChangeText={text => setUsername(text)}
             placeholder="Username"
-          />
+          /> */}
           <Text style={styles.inputLabel}>firstname</Text>
           <TextInput
             style={styles.input}

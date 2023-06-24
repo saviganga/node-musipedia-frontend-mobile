@@ -20,7 +20,7 @@ const Artists = () => {
 
         // Perform login logic
         try {
-            const response = await axios.get('https://8af3-197-211-61-111.ngrok-free.app/artists');
+            const response = await axios.get('https://ae7e-197-211-58-40.ngrok-free.app/artists');
         
             // Handle response
             if (response.status === 200) {

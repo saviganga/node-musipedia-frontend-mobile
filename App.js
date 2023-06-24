@@ -23,13 +23,26 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-
-        <Tab.Screen name="Albums" component={Albums} />
-        <Tab.Screen name="Artists" component={Artists} />
-        <Tab.Screen name="Songs" component={Songs} />
-            
-      </Tab.Navigator>
+      <Stack.Navigator>
+        {!isAuthenticated ? (
+            <Stack.Screen name="auth">
+              {(props) => <LoginSignupPage {...props} onLogin={() => setIsAuthenticated(true)} />}
+            </Stack.Screen>
+          ) : (
+            <Stack.Screen name=" ">
+            {() => (
+              <Tab.Navigator>
+                <Tab.Screen name="albums" component={Albums} />
+                <Tab.Screen name="artists" component={Artists} />
+                <Tab.Screen name="songs" component={Songs} />
+                <Tab.Screen name="settings">
+                  {(props) => <Settings {...props} onLogout={() => setIsAuthenticated(false)} />}
+                </Tab.Screen>
+              </Tab.Navigator>
+            )}
+          </Stack.Screen>
+        )}  
+      </Stack.Navigator>
     </NavigationContainer>
   );
 
