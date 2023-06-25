@@ -56,11 +56,23 @@ const Albums = () => {
     };
 
     return (
-        <FlatList
-          data={albums}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-        />
+        <View style={styles.container}>
+
+            <View style={styles.addalbumContainer}>
+                <View style={styles.addalbumButton}>
+                    <Button title='add album' />
+                </View>
+            </View>
+
+            <View style={styles.FlatListcontainer}>
+                <FlatList
+                data={albums}
+                keyExtractor={keyExtractor}
+                renderItem={renderItem}
+                />
+            </View>
+
+        </View>
       );
 
 
@@ -81,6 +93,26 @@ const styles = {
     },
     description: {
       fontSize: 16,
+    },
+    addalbumContainer: {
+        // marginBottom: 16,
+        flex: 1,
+      },
+    addalbumButton: {
+    alignItems: 'flex-end',
+    flex: 1
+    },
+    FlatListcontainer: {
+        marginBottom: 16,
+        flex: 7
+      },
+    button: {
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 8,
+        margin: 10,
+        width: 30,
+        
     },
   };
 

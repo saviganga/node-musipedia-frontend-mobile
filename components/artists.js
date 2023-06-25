@@ -46,8 +46,7 @@ const Artists = () => {
         return (
           <View style={styles.itemContainer}>
             <Text style={styles.title}>{item.stageName}</Text>
-            <Text style={styles.description}>{item.firstName}</Text>
-            <Text style={styles.description}>{item.lastName}</Text>
+            <Text style={styles.description}>{item.firstName} {item.lastName}</Text>
           </View>
         );
       };
@@ -57,11 +56,22 @@ const Artists = () => {
     };
 
     return (
-        <FlatList
-          data={artists}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-        />
+        <View style={styles.container}>
+
+            <View style={styles.addartistContainer}>
+                <View style={styles.addartistButton}>
+                    <Button title='add artist' />
+                </View>
+            </View>
+
+            <View style={styles.FlatListcontainer}>
+                <FlatList
+                data={artists}
+                keyExtractor={keyExtractor}
+                renderItem={renderItem}
+                />
+            </View>
+        </View>
       );
 
 
@@ -82,6 +92,26 @@ const styles = {
     },
     description: {
       fontSize: 16,
+    },
+    addartistContainer: {
+        // marginBottom: 16,
+        flex: 1,
+      },
+    addartistButton: {
+    alignItems: 'flex-end',
+    flex: 1
+    },
+    FlatListcontainer: {
+        marginBottom: 16,
+        flex: 7
+      },
+    button: {
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 8,
+        margin: 10,
+        width: 30,
+        
     },
   };
 

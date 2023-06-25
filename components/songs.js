@@ -57,11 +57,23 @@ const Songs = () => {
     };
 
     return (
-        <FlatList
-          data={songs}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-        />
+        <View style={styles.container}>
+
+            <View style={styles.addsongContainer}>
+                <View style={styles.addsongButton}>
+                    <Button title='add song' />
+                </View>
+            </View>
+
+            <View style={styles.FlatListcontainer}>
+                <FlatList
+                data={songs}
+                keyExtractor={keyExtractor}
+                renderItem={renderItem}
+                />
+            </View>
+            
+        </View>
       );
 
 
@@ -76,12 +88,32 @@ const styles = {
     itemContainer: {
       marginBottom: 16,
     },
+    addsongContainer: {
+        // marginBottom: 16,
+        flex: 1,
+      },
+    addsongButton: {
+    alignItems: 'flex-end',
+    flex: 1
+    },
     title: {
       fontSize: 18,
       fontWeight: 'bold',
     },
     description: {
       fontSize: 16,
+    },
+    FlatListcontainer: {
+        marginBottom: 16,
+        flex: 7
+      },
+    button: {
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 8,
+        margin: 10,
+        width: 30,
+        
     },
   };
 
