@@ -20,7 +20,6 @@ const Artists = () => {
     // declare state variables
     const [artists, setArtists] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [receivedData, setReceivedData] = useState(null);
 
     // functions to update state variables
 
@@ -31,44 +30,10 @@ const Artists = () => {
 
     // handle create artist form submit - receive form data from createartist form component and call create artist function
     const handleFormSubmit = (data) => {
-      setReceivedData(data);
-      console.log(receivedData)
-      createArtist()
+      toggleModal()
+      getArtists()
     };
 
-    // call backend to create artist
-    const createArtist = async() => {
-      
-      // Perform login logic
-      try {
-
-          const userToken = await AsyncStorage.getItem('userToken');
-
-          const headers = {
-              Authorization: `JWT ${userToken}`,
-              'Content-Type': 'application/json',
-            };
-  
-          const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/artists', {firstName: receivedData.firstName, lastName: receivedData.lastName, stageName: receivedData.stageName, DOB: receivedData.DOB}, { headers });
-      
-          // Handle response
-          if (response.status === 201) {
-
-              // console.log(response.data)
-              alert('Successfully added new artist')
-              getArtists()
-              toggleModal()
-          
-          } else {
-          alert(response.message);
-          }
-      } catch (error) {
-          // Handle error
-          alert(error);
-          console.log(error)
-      }
-    }
-    
     // call backend to get all artists
     const getArtists = async() => {
 

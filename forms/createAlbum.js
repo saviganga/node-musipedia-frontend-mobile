@@ -16,32 +16,42 @@ const CreateAlbumForm = ({ onFormSubmit }) => {
     const [artist, setartist] = useState('')
     const [name, setname] = useState('')
     const [year, setyear] = useState('')
-    const [fomData, setFormData] = useState({})
 
 
-    const artistChangeHandler = (val) => {
-        console.log(val)
-        setartist(val)
-    };
-
-    const nameChangeHandler = (val) => {
-        console.log(val)
-        setname(val)
-    };
-
-    const yearChangeHandler = (val) => {
-        console.log(val)
-        setyear(val)
-    };
-
-    const submitFormData = () => {
-        setFormData({
-            artist: artist, name: name, year: year
-        })
-        onFormSubmit(fomData);
+    // call backend to create album
+    const createAlbum = async() => {
+      
+        // Perform login logic
+        try {
+  
+            const userToken = await AsyncStorage.getItem('userToken');
+  
+            const headers = {
+                Authorization: `JWT ${userToken}`,
+                'Content-Type': 'application/json',
+              };
+    
+            const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/albums', {name: name, artist: artist, year: year}, { headers });
         
-
-    }
+            // Handle response
+            if (response.status === 201) {
+  
+                // console.log(response.data)
+                alert('Successfully added new album')
+                setname('')
+                setartist('')
+                setyear('')
+                onFormSubmit()
+            
+            } else {
+            alert(response.message);
+            }
+        } catch (error) {
+            // Handle error
+            alert(error);
+            console.log(error)
+        }
+      }
 
     return (
 
@@ -53,7 +63,7 @@ const CreateAlbumForm = ({ onFormSubmit }) => {
           style={styles.input}
           value={name}
           placeholder='enter album name'
-          onChangeText={nameChangeHandler}
+          onChangeText={val => setname(val)}
           />
 
           <Text style={styles.inputLabel}>artist name</Text>
@@ -61,7 +71,7 @@ const CreateAlbumForm = ({ onFormSubmit }) => {
           style={styles.input}
           value={artist}
           placeholder='enter artist'
-          onChangeText={artistChangeHandler}
+          onChangeText={val => setartist(val)}
           />
 
           <Text style={styles.inputLabel}>album release year</Text>
@@ -69,19 +79,15 @@ const CreateAlbumForm = ({ onFormSubmit }) => {
           style={styles.input}
           value={year}
           placeholder='enter album year of release'
-          onChangeText={yearChangeHandler}
+          onChangeText={val => setyear(val)}
           />
 
-        <Button onPress={submitFormData} title='submit info' />
+        <Button onPress={createAlbum} title='submit info' />
       
       </View>
       
     )
   }
-
-
-
-
 
 
 

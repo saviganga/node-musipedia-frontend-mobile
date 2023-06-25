@@ -9,8 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginSignupPage = ({onLogin}) => {
 
 
-
-  const [username, setUsername] = useState('');
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -35,7 +33,6 @@ const LoginSignupPage = ({onLogin}) => {
             console.log(response.data)
 
           // Successful login
-        //   alert(` User successfully logged in `);
         const token = response.data.token;
         await AsyncStorage.setItem('userToken', token);
           onLogin();
@@ -74,12 +71,10 @@ const LoginSignupPage = ({onLogin}) => {
           } else {
             // Failed signup
             alert(response.message);
-            // console.log(response.data)
           }
         } catch (error) {
           // Handle error
           alert(error);
-        //   console.log(error)
         }
       }
      
@@ -111,13 +106,6 @@ const LoginSignupPage = ({onLogin}) => {
         </>
       ) : (
         <>
-          {/* <Text style={styles.inputLabel}>username</Text>
-          <TextInput
-            style={styles.input}
-            value={username}
-            onChangeText={text => setUsername(text)}
-            placeholder="Username"
-          /> */}
           <Text style={styles.inputLabel}>firstname</Text>
           <TextInput
             style={styles.input}
