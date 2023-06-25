@@ -11,22 +11,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const CreateArtistForm = () => {
+const CreateArtistForm = ({ onFormSubmit }) => {
 
     const [artistLastName, setartistLastName] = useState('')
     const [artistFirstName, setartistFirstName] = useState('')
     const [artistStageName, setartistStageName] = useState('')
     const [artistdob, setartistdob] = useState('')
+    const [fomData, setFormData] = useState({})
 
 
     const artistfirstnameChangeHandler = (val) => {
         console.log(val)
-        setartistFirstName(val)
+        setartistFirstName(val)    
     };
 
     const artistlastnameChangeHandler = (val) => {
         console.log(val)
         setartistLastName(val)
+        console.log(artistFirstName)
     };
 
     const artiststagenameChangeHandler = (val) => {
@@ -38,6 +40,18 @@ const CreateArtistForm = () => {
         console.log(val)
         setartistdob(val)
     };
+
+    const submitFormData = () => {
+        console.log([artistFirstName, artistLastName, artistStageName, artistdob])
+        setFormData({
+            firstName: artistFirstName, lastName: artistLastName, stageName: artistStageName, DOB: artistdob
+        })
+        onFormSubmit(fomData);
+        
+
+    }
+
+    
 
     return (
 
@@ -75,7 +89,7 @@ const CreateArtistForm = () => {
           onChangeText={artiststdobChangeHandler}
           />
 
-          {/* <Button onPress={pressButtonHandler} title='submit info' /> */}
+          <Button onPress={submitFormData} title='submit info' />
       
       </View>
       

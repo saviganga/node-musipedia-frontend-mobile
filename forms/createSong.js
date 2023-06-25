@@ -11,11 +11,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const CreateSongForm = () => {
+const CreateSongForm = ({ onFormSubmit }) => {
 
     const [artist, setartist] = useState('')
     const [name, setname] = useState('')
     const [year, setyear] = useState('')
+    const [fomData, setFormData] = useState({})
 
 
     const artistChangeHandler = (val) => {
@@ -33,6 +34,15 @@ const CreateSongForm = () => {
         setyear(val)
     };
 
+    const submitFormData = () => {
+        setFormData({
+            artist: artist, name: name, year: year
+        })
+        onFormSubmit(fomData);
+        
+
+    }
+
     return (
 
 
@@ -46,7 +56,7 @@ const CreateSongForm = () => {
           onChangeText={nameChangeHandler}
           />
 
-          <Text style={styles.inputLabel}>song name</Text>
+          <Text style={styles.inputLabel}>artist name</Text>
           <TextInput
           style={styles.input}
           value={artist}
@@ -62,7 +72,7 @@ const CreateSongForm = () => {
           onChangeText={yearChangeHandler}
           />
 
-          {/* <Button onPress={pressButtonHandler} title='submit info' /> */}
+        <Button onPress={submitFormData} title='submit info' />
       
       </View>
       

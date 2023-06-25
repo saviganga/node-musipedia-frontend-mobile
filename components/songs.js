@@ -11,18 +11,65 @@ import CreateSongForm from '/Users/saviganga/Documents/working-boy/native/mfe/fo
 
 const Songs = () => {
 
+    // call backend for artists when the app is loaded
     useEffect(() => {
         // alert(`songs`)
         getSongs()
         console.log(songs)
     }, [])
 
+    // declare state variables
     const [songs, setSongs] = useState([]);
-
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [receivedData, setReceivedData] = useState(null);
+
+
+    // functions to update state variables
+
+    // toggle create song modal
     const toggleModal = () => {
       setIsModalVisible(!isModalVisible);
     };
+
+    // handle create artist form submit - receive form data from createartist form component and call create artist function
+    const handleFormSubmit = (data) => {
+      setReceivedData(data);
+      console.log(receivedData)
+      createSong()
+    };
+
+    // call backend to create artist
+    const createSong = async() => {
+      
+      // Perform login logic
+      try {
+
+          const userToken = await AsyncStorage.getItem('userToken');
+
+          const headers = {
+              Authorization: `JWT ${userToken}`,
+              'Content-Type': 'application/json',
+            };
+  
+          const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/songs', {name: receivedData.name, artist: receivedData.artist, year: receivedData.year}, { headers });
+      
+          // Handle response
+          if (response.status === 201) {
+
+              // console.log(response.data)
+              alert('Successfully added new song')
+              getSongs()
+              toggleModal()
+          
+          } else {
+          alert(response.message);
+          }
+      } catch (error) {
+          // Handle error
+          alert(error);
+          console.log(error)
+      }
+    }
  
     const getSongs = async() => {
 
@@ -77,10 +124,7 @@ const Songs = () => {
               isVisible={isModalVisible}>
               <View style={styles.modalContainer}>
                 <View style={styles.modal}>
-                  <CreateSongForm />
-                  <View>
-                    <Button title="Hide modal" onPress={toggleModal} />
-                  </View>
+                  <CreateSongForm onFormSubmit={handleFormSubmit} />
                 </View>
               </View>
             </Modal>
