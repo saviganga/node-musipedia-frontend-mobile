@@ -11,19 +11,65 @@ import CreateArtistForm from '/Users/saviganga/Documents/working-boy/native/mfe/
 
 const Artists = () => {
 
+
+    // call backend for artists when the app is loaded
     useEffect(() => {
-        // alert(`artists`)
         getArtists()
-        console.log(artists)
     }, [])
 
+    // declare state variables
     const [artists, setArtists] = useState([]);
-
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [receivedData, setReceivedData] = useState(null);
+
+    // functions to update state variables
+
+    // toggle create artist modal
     const toggleModal = () => {
       setIsModalVisible(!isModalVisible);
     };
- 
+
+    // handle create artist form submit - receive form data from createartist form component and call create artist function
+    const handleFormSubmit = (data) => {
+      setReceivedData(data);
+      console.log(receivedData)
+      createArtist()
+    };
+
+    // call backend to create artist
+    const createArtist = async() => {
+      
+      // Perform login logic
+      try {
+
+          const userToken = await AsyncStorage.getItem('userToken');
+
+          const headers = {
+              Authorization: `JWT ${userToken}`,
+              'Content-Type': 'application/json',
+            };
+  
+          const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/artists', {firstName: receivedData.firstName, lastName: receivedData.lastName, stageName: receivedData.stageName, DOB: receivedData.DOB}, { headers });
+      
+          // Handle response
+          if (response.status === 201) {
+
+              // console.log(response.data)
+              alert('Successfully added new artist')
+              getArtists()
+              toggleModal()
+          
+          } else {
+          alert(response.message);
+          }
+      } catch (error) {
+          // Handle error
+          alert(error);
+          console.log(error)
+      }
+    }
+    
+    // call backend to get all artists
     const getArtists = async() => {
 
         // Perform login logic
@@ -33,21 +79,17 @@ const Artists = () => {
             // Handle response
             if (response.status === 200) {
 
-                // console.log(response.data)
-
                 setArtists(response.data.data)
-
             
             } else {
             alert(response.message);
             }
         } catch (error) {
             // Handle error
-            alert("invalid credentials");
+            alert(error);
             console.log(error)
         } 
         }
-
 
 
     const renderItem = ({ item }) => {
@@ -76,10 +118,7 @@ const Artists = () => {
               isVisible={isModalVisible}>
               <View style={styles.modalContainer}>
                 <View style={styles.modal}>
-                  <CreateArtistForm />
-                  <View>
-                    <Button title="Hide modal" onPress={toggleModal} />
-                  </View>
+                  <CreateArtistForm onFormSubmit={handleFormSubmit} />
                 </View>
               </View>
             </Modal>

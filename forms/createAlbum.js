@@ -11,11 +11,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const CreateAlbumForm = () => {
+const CreateAlbumForm = ({ onFormSubmit }) => {
 
     const [artist, setartist] = useState('')
     const [name, setname] = useState('')
     const [year, setyear] = useState('')
+    const [fomData, setFormData] = useState({})
 
 
     const artistChangeHandler = (val) => {
@@ -32,6 +33,15 @@ const CreateAlbumForm = () => {
         console.log(val)
         setyear(val)
     };
+
+    const submitFormData = () => {
+        setFormData({
+            artist: artist, name: name, year: year
+        })
+        onFormSubmit(fomData);
+        
+
+    }
 
     return (
 
@@ -62,7 +72,7 @@ const CreateAlbumForm = () => {
           onChangeText={yearChangeHandler}
           />
 
-          {/* <Button onPress={pressButtonHandler} title='submit info' /> */}
+        <Button onPress={submitFormData} title='submit info' />
       
       </View>
       
