@@ -4,6 +4,9 @@ import { View, TextInput, Button, Text, StyleSheet, ScrollView, FlatList, } from
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Modal from 'react-native-modal';
+import CreateAlbumForm from '/Users/saviganga/Documents/working-boy/native/mfe/forms/createAlbum';
+
 
 
 const Albums = () => {
@@ -15,6 +18,11 @@ const Albums = () => {
     }, [])
 
     const [albums, setAlbums] = useState([]);
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const toggleModal = () => {
+      setIsModalVisible(!isModalVisible);
+    };
  
     const getAlbums = async() => {
 
@@ -60,9 +68,22 @@ const Albums = () => {
 
             <View style={styles.addalbumContainer}>
                 <View style={styles.addalbumButton}>
-                    <Button title='add album' />
+                    <Button onPress={toggleModal} title='add album' />
                 </View>
             </View>
+
+
+            <Modal
+              isVisible={isModalVisible}>
+              <View style={styles.modalContainer}>
+                <View style={styles.modal}>
+                  <CreateAlbumForm />
+                  <View>
+                    <Button title="Hide modal" onPress={toggleModal} />
+                  </View>
+                </View>
+              </View>
+            </Modal>
 
             <View style={styles.FlatListcontainer}>
                 <FlatList
@@ -113,6 +134,33 @@ const styles = {
         margin: 10,
         width: 30,
         
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: 'black',
+      padding: 8,
+      margin: 10,
+      width: 200
+    },
+
+    inputLabel: {
+        marginBottom: -1,
+        marginStart: 15,
+        marginTop: 10
+        
+      },
+    modalContainer: {
+      marginTop: 40,
+      flex: 1,
+      backgroundColor: 'white',
+      alignItems: 'center'
+      
+    },
+    modal: {
+      marginTop: 40,
+      flex: 1,
+      backgroundColor: 'white',
+      
     },
   };
 
