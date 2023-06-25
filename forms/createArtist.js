@@ -17,41 +17,46 @@ const CreateArtistForm = ({ onFormSubmit }) => {
     const [artistFirstName, setartistFirstName] = useState('')
     const [artistStageName, setartistStageName] = useState('')
     const [artistdob, setartistdob] = useState('')
-    const [fomData, setFormData] = useState({})
 
-
-    const artistfirstnameChangeHandler = (val) => {
-        console.log(val)
-        setartistFirstName(val)    
-    };
-
-    const artistlastnameChangeHandler = (val) => {
-        console.log(val)
-        setartistLastName(val)
-        console.log(artistFirstName)
-    };
-
-    const artiststagenameChangeHandler = (val) => {
-        console.log(val)
-        setartistStageName(val)
-    };
-
-    const artiststdobChangeHandler = (val) => {
-        console.log(val)
-        setartistdob(val)
-    };
-
-    const submitFormData = () => {
-        console.log([artistFirstName, artistLastName, artistStageName, artistdob])
-        setFormData({
-            firstName: artistFirstName, lastName: artistLastName, stageName: artistStageName, DOB: artistdob
-        })
-        onFormSubmit(fomData);
-        
-
-    }
 
     
+    // // call backend to create artist
+    const createArtist = async() => {
+      
+        // Perform login logic
+        try {
+
+            console.log(artistFirstName)
+  
+            const userToken = await AsyncStorage.getItem('userToken');
+  
+            const headers = {
+                Authorization: `JWT ${userToken}`,
+                'Content-Type': 'application/json',
+              };
+    
+            const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/artists', {firstName: artistFirstName, lastName: artistLastName, stageName: artistStageName, DOB: artistdob}, { headers });
+        
+            // Handle response
+            if (response.status === 201) {
+  
+                // console.log(response.data)
+                alert('Successfully added new artist')
+                setartistFirstName('')
+                setartistLastName('')
+                setartistStageName('')
+                setartistdob('')
+                onFormSubmit()
+            
+            } else {
+            alert(response.message);
+            }
+        } catch (error) {
+            // Handle error
+            alert(error);
+            console.log(error)
+        }
+      }
 
     return (
 
@@ -62,7 +67,7 @@ const CreateArtistForm = ({ onFormSubmit }) => {
           style={styles.input}
           value={artistFirstName}
           placeholder='enter artist first name'
-          onChangeText={artistfirstnameChangeHandler}
+          onChangeText={val => setartistFirstName(val)}
           />
 
           <Text style={styles.inputLabel}>artist last name</Text>
@@ -70,7 +75,7 @@ const CreateArtistForm = ({ onFormSubmit }) => {
           style={styles.input}
           value={artistLastName}
           placeholder='enter artist last name'
-          onChangeText={artistlastnameChangeHandler}
+          onChangeText={val => setartistLastName(val)}
           />
 
           <Text style={styles.inputLabel}>artist stage name</Text>
@@ -78,7 +83,7 @@ const CreateArtistForm = ({ onFormSubmit }) => {
           style={styles.input}
           value={artistStageName}
           placeholder='enter artist stagename'
-          onChangeText={artiststagenameChangeHandler}
+          onChangeText={val => setartistStageName(val)}
           />
 
           <Text style={styles.inputLabel}>artist dob</Text>
@@ -86,19 +91,15 @@ const CreateArtistForm = ({ onFormSubmit }) => {
           style={styles.input}
           value={artistdob}
           placeholder='enter artist date of birth'
-          onChangeText={artiststdobChangeHandler}
+          onChangeText={val => setartistdob(val)}
           />
 
-          <Button onPress={submitFormData} title='submit info' />
+          <Button onPress={createArtist} title='submit info' />
       
       </View>
       
     )
   }
-
-
-
-
 
 
 

@@ -14,13 +14,11 @@ const Albums = () => {
     // call backend for artists when the app is loaded
     useEffect(() => {
         getAlbums()
-        console.log(albums)
     }, [])
 
     // declare state variables
     const [albums, setAlbums] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [receivedData, setReceivedData] = useState(null);
 
     // functions to update state variables
     
@@ -30,44 +28,11 @@ const Albums = () => {
     };
 
     // handle create album form submit - receive form data from create album form component and call create album function
-    const handleFormSubmit = (data) => {
-      setReceivedData(data);
-      console.log(receivedData)
-      createAlbum()
+    const handleFormSubmit = () => {
+      toggleModal()
+      getAlbums()
+
     };
-
-    // call backend to create album
-    const createAlbum = async() => {
-      
-      // Perform login logic
-      try {
-
-          const userToken = await AsyncStorage.getItem('userToken');
-
-          const headers = {
-              Authorization: `JWT ${userToken}`,
-              'Content-Type': 'application/json',
-            };
-  
-          const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/albums', {name: receivedData.name, artist: receivedData.artist, year: receivedData.year}, { headers });
-      
-          // Handle response
-          if (response.status === 201) {
-
-              // console.log(response.data)
-              alert('Successfully added new album')
-              getAlbums()
-              toggleModal()
-          
-          } else {
-          alert(response.message);
-          }
-      } catch (error) {
-          // Handle error
-          alert(error);
-          console.log(error)
-      }
-    }
  
     // call backend to get all artists
     const getAlbums = async() => {
