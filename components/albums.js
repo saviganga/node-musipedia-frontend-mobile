@@ -46,6 +46,7 @@ const Albums = () => {
         return (
           <View style={styles.itemContainer}>
             <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.description}>{item.artist.stageName}</Text>
           </View>
         );
       };

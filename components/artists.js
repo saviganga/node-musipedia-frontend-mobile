@@ -45,9 +45,9 @@ const Artists = () => {
     const renderItem = ({ item }) => {
         return (
           <View style={styles.itemContainer}>
-            <Text style={styles.title}>{item.firstName}</Text>
+            <Text style={styles.title}>{item.stageName}</Text>
+            <Text style={styles.description}>{item.firstName}</Text>
             <Text style={styles.description}>{item.lastName}</Text>
-            <Text style={styles.description}>{item.stageName}</Text>
           </View>
         );
       };

@@ -32,8 +32,8 @@ export default function App() {
             <Stack.Screen name=" ">
             {() => (
               <Tab.Navigator>
-                <Tab.Screen name="albums" component={Albums} />
                 <Tab.Screen name="artists" component={Artists} />
+                <Tab.Screen name="albums" component={Albums} />
                 <Tab.Screen name="songs" component={Songs} />
                 <Tab.Screen name="settings">
                   {(props) => <Settings {...props} onLogout={() => setIsAuthenticated(false)} />}
