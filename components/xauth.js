@@ -34,7 +34,9 @@ const LoginSignupPage = ({onLogin}) => {
 
           // Successful login
         const token = response.data.token;
+        const userId = response.data.userId
         await AsyncStorage.setItem('userToken', token);
+        await AsyncStorage.setItem('userId', userId)
           onLogin();
         } else {
           // Failed login
@@ -63,6 +65,7 @@ const LoginSignupPage = ({onLogin}) => {
                 //   alert(` User successfully logged in `);
                 const token = login_resp.data.token;
                 await AsyncStorage.setItem('userToken', token);
+                await AsyncStorage.setItem('userId', userId)
                 onLogin();
                 } else {
                 // Failed login

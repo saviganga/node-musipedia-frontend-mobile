@@ -44,11 +44,12 @@ const CreateAlbumForm = ({ onFormSubmit }) => {
                 onFormSubmit()
             
             } else {
+            console.log('here')
             alert(response.message);
             }
         } catch (error) {
             // Handle error
-            alert(error);
+            alert("unable to create album");
             console.log(error)
         }
       }
@@ -56,7 +57,15 @@ const CreateAlbumForm = ({ onFormSubmit }) => {
     return (
 
 
-      <View contentContainerStyle={styles.container} scrollEnabled={false} resetScrollToCoords={{ x: 0, y: 0 }}>
+      <View style={styles.container}>
+
+        <View style={styles.addartistContainer}>
+            <View style={styles.addartistButton}>
+                <Button onPress={onFormSubmit} title='cancel' />
+            </View>
+        </View>
+
+        <View style={styles.FlatListcontainer}>
         
           <Text style={styles.inputLabel}>album name</Text>
           <TextInput
@@ -82,7 +91,9 @@ const CreateAlbumForm = ({ onFormSubmit }) => {
           onChangeText={val => setyear(val)}
           />
 
-        <Button onPress={createAlbum} title='submit info' />
+          <Button onPress={createAlbum} title='submit info' />
+
+        </View>
       
       </View>
       
@@ -94,7 +105,7 @@ const CreateAlbumForm = ({ onFormSubmit }) => {
 const styles = {
 container: {
     flex: 1,
-    padding: 16,
+    padding: 10,
 },
 itemContainer: {
     marginBottom: 16,
