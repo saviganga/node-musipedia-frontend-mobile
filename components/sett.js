@@ -7,12 +7,19 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 
 export default function Settings( { onLogout } ) {
+
+  // call backend for artists when the app is loaded
+  useEffect(() => {
+    getUserProfile()
+}, [])
+
+  const [userProfile, setUserProfile] = useState({})
 
 
     const logout = async() => {
@@ -24,15 +31,51 @@ export default function Settings( { onLogout } ) {
         onLogout()
     }
 
+  const getUserProfile = async() => {
+
+    try {
+      const userToken = await AsyncStorage.getItem('userToken')
+      const userId = await AsyncStorage.getItem('userId')
+      const headers = {
+        Authorization: `JWT ${userToken}`,
+        'Content-Type': 'application/json',
+      };
+      const response = await axios.get(`https://ae7e-197-211-58-40.ngrok-free.app/users/${userId}`, { headers })
+      if (response.status === 200) {
+        setUserProfile({
+          firstName: response.data.data.firstName,
+          lastName: response.data.data.lastName,
+          email: response.data.data.email
+        })
+      } else{
+        alert('Unable to fetch user profile')
+      }
+    } catch (err) {
+      console.log(err)
+      alert('error mf')
+    }
+
+  }
+
 
 
 return (
-    <KeyboardAwareScrollView contentContainerStyle={styles.container} scrollEnabled={false} resetScrollToCoords={{ x: 0, y: 0 }}>
-      {/* <View> */}
-          <Button onPress={logout} title='logout' />
+    <View style={styles.container}>
 
-      {/* </View> */}
-      </KeyboardAwareScrollView>
+      <View style={styles.logoutButtonContainer}>
+        <View style={styles.logoutButton}>
+          <Button onPress={logout} title='logout' />
+        </View>
+      </View>
+
+      <View style={styles.userProfileContainer}>
+        <View style={styles.itemContainer}>
+          <Text style={styles.title}>{userProfile.email}</Text>
+          <Text style={styles.description}>{userProfile.firstName} {userProfile.lastName}</Text>
+        </View>
+      </View>
+
+    </View>
   )
 }
 
@@ -57,9 +100,36 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 10
+    // justifyContent: 'center',
+    // alignItems: 'center',
     },
+  logoutButtonContainer: {
+    // marginBottom: 16,
+    flex: 1
+  },
+
+  logoutButton: {
+    alignItems: 'flex-end',
+    flex: 1,
+    // marginRight: 10
+    },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  description: {
+    fontSize: 16,
+  },
+  userProfileContainer: {
+    marginBottom: 16,
+    flex: 7
+  },
+  itemContainer: {
+    marginBottom: 16,
+    padding: 5
+  },
+
  
 });
 

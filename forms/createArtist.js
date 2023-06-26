@@ -61,40 +61,52 @@ const CreateArtistForm = ({ onFormSubmit }) => {
     return (
 
 
-      <View contentContainerStyle={styles.container} scrollEnabled={false} resetScrollToCoords={{ x: 0, y: 0 }}>
-          <Text style={styles.inputLabel}>artist first name</Text>
-          <TextInput
-          style={styles.input}
-          value={artistFirstName}
-          placeholder='enter artist first name'
-          onChangeText={val => setartistFirstName(val)}
-          />
+        <View style={styles.container}>
 
-          <Text style={styles.inputLabel}>artist last name</Text>
-          <TextInput
-          style={styles.input}
-          value={artistLastName}
-          placeholder='enter artist last name'
-          onChangeText={val => setartistLastName(val)}
-          />
+            <View style={styles.addartistContainer}>
+                <View style={styles.addartistButton}>
+                    <Button onPress={onFormSubmit} title='cancel' />
+                </View>
+            </View>
 
-          <Text style={styles.inputLabel}>artist stage name</Text>
-          <TextInput
-          style={styles.input}
-          value={artistStageName}
-          placeholder='enter artist stagename'
-          onChangeText={val => setartistStageName(val)}
-          />
+            <View style={styles.FlatListcontainer}>
 
-          <Text style={styles.inputLabel}>artist dob</Text>
-          <TextInput
-          style={styles.input}
-          value={artistdob}
-          placeholder='enter artist date of birth'
-          onChangeText={val => setartistdob(val)}
-          />
 
-          <Button onPress={createArtist} title='submit info' />
+                <Text style={styles.inputLabel}>artist first name</Text>
+                <TextInput
+                style={styles.input}
+                value={artistFirstName}
+                placeholder='enter artist first name'
+                onChangeText={val => setartistFirstName(val)}
+                />
+
+                <Text style={styles.inputLabel}>artist last name</Text>
+                <TextInput
+                style={styles.input}
+                value={artistLastName}
+                placeholder='enter artist last name'
+                onChangeText={val => setartistLastName(val)}
+                />
+
+                <Text style={styles.inputLabel}>artist stage name</Text>
+                <TextInput
+                style={styles.input}
+                value={artistStageName}
+                placeholder='enter artist stagename'
+                onChangeText={val => setartistStageName(val)}
+                />
+
+                <Text style={styles.inputLabel}>artist dob</Text>
+                <TextInput
+                style={styles.input}
+                value={artistdob}
+                placeholder='enter artist date of birth'
+                onChangeText={val => setartistdob(val)}
+                />
+
+                <Button onPress={createArtist} title='submit info' />
+
+            </View>
       
       </View>
       

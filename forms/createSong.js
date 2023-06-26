@@ -56,33 +56,47 @@ const CreateSongForm = ({ onFormSubmit }) => {
     return (
 
 
-      <View contentContainerStyle={styles.container} scrollEnabled={false} resetScrollToCoords={{ x: 0, y: 0 }}>
+        <View style={styles.container}>
+
+
+            <View style={styles.addartistContainer}>
+                <View style={styles.addartistButton}>
+                    <Button onPress={onFormSubmit} title='cancel' />
+                </View>
+            </View>
+
+            <View style={styles.FlatListcontainer}>
+
+                <Text style={styles.inputLabel}>song name</Text>
+                <TextInput
+                style={styles.input}
+                value={name}
+                placeholder='enter song name'
+                onChangeText={val => setname(val)}
+                />
+
+                <Text style={styles.inputLabel}>artist name</Text>
+                <TextInput
+                style={styles.input}
+                value={artist}
+                placeholder='enter artist'
+                onChangeText={val => setartist(val)}
+                />
+
+                <Text style={styles.inputLabel}>song release year</Text>
+                <TextInput
+                style={styles.input}
+                value={year}
+                placeholder='enter song year of release'
+                onChangeText={val => setyear(val)}
+                />
+
+                <Button onPress={createSong} title='submit info' />
+
+
+            </View>
         
-          <Text style={styles.inputLabel}>song name</Text>
-          <TextInput
-          style={styles.input}
-          value={name}
-          placeholder='enter song name'
-          onChangeText={val => setname(val)}
-          />
-
-          <Text style={styles.inputLabel}>artist name</Text>
-          <TextInput
-          style={styles.input}
-          value={artist}
-          placeholder='enter artist'
-          onChangeText={val => setartist(val)}
-          />
-
-          <Text style={styles.inputLabel}>song release year</Text>
-          <TextInput
-          style={styles.input}
-          value={year}
-          placeholder='enter song year of release'
-          onChangeText={val => setyear(val)}
-          />
-
-        <Button onPress={createSong} title='submit info' />
+          
       
       </View>
       
