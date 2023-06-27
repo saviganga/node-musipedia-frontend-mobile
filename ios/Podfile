@@ -30,6 +30,9 @@ target 'mfe' do
 
   # Flags change depending on the env values.
   flags = get_default_flags()
+  
+  pod 'react-native-image-crop-picker', :path => '/Users/saviganga/Documents/working-boy/native/mfe/node_modules/react-native-image-crop-picker'
+
 
   use_react_native!(
     :path => config[:reactNativePath],
