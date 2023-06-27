@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, ScrollView, FlatList, } from 'react-native';
+import { View, Image, TextInput, Button, Text, StyleSheet, ScrollView, FlatList, } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 
 
@@ -16,6 +17,24 @@ const CreateSongForm = ({ onFormSubmit }) => {
     const [artist, setartist] = useState('')
     const [name, setname] = useState('')
     const [year, setyear] = useState('')
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const selectImage = () => {
+        ImageCropPicker.openPicker({
+          cropping: true,
+          cropperCircleOverlay: false,
+          compressImageMaxWidth: 5,
+          compressImageMaxHeight: 5,
+          compressImageQuality: 0.7,
+          mediaType: 'photo'
+        })
+          .then(response => {
+            setSelectedImage(response);
+          })
+          .catch(error => {
+            console.log('ImagePicker Error: ', error);
+          });
+      };
 
     // call backend to create artist
     const createSong = async() => {
@@ -27,10 +46,21 @@ const CreateSongForm = ({ onFormSubmit }) => {
   
             const headers = {
                 Authorization: `JWT ${userToken}`,
-                'Content-Type': 'application/json',
-              };
+                'Content-Type': 'multipart/form-data',
+            };
+
+            const payload = new FormData();
+            payload.append('coverArt', {
+            uri: selectImage.path,
+            type: selectImage.mime,
+            name: selectImage.filename || 'image.jpg',
+            });
+
+            payload.append('artist', artist);
+            payload.append('name', name);
+            payload.append('year', year);
     
-            const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/songs', {name: name, artist: artist, year: year}, { headers });
+            const response = await axios.post('https://ae7e-197-211-58-40.ngrok-free.app/songs', payload, { headers });
         
             // Handle response
             if (response.status === 201) {
@@ -40,6 +70,7 @@ const CreateSongForm = ({ onFormSubmit }) => {
                 setname('')
                 setartist('')
                 setyear('')
+                setSelectedImage(null)
                 onFormSubmit()
             
             } else {
@@ -90,6 +121,23 @@ const CreateSongForm = ({ onFormSubmit }) => {
                 placeholder='enter song year of release'
                 onChangeText={val => setyear(val)}
                 />
+
+                <Button title="Select Image" onPress={selectImage} />
+                {selectedImage && (
+                    <View>
+                    <Image
+                        source={{ uri: selectedImage.path }}
+                        style={{ width: 200, height: 200, marginTop: 10 }}
+                    />
+                    {/* <TextInput
+                        placeholder="Enter Image Name"
+                        value={imageName}
+                        onChangeText={text => setImageName(text)}
+                        style={{ marginTop: 10, width: 200, height: 40, borderColor: 'gray', borderWidth: 1 }}
+                    /> */}
+                    {/* <Button title="Upload Image" onPress={createAlbum} /> */}
+                    </View>
+                )}
 
                 <Button onPress={createSong} title='submit info' />
 
